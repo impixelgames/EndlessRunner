@@ -13,6 +13,12 @@ namespace EndlessRunner
         Texture2D texture;
         Vector2 texturePos;
         KeyboardState previousState;
+
+        // game variables
+        float gravity = 0.04f;
+        float friction = 0.3f;
+        Vector2 velocity = new Vector2(10, 125);
+        bool hasJumped = false;
         
         public Game1()
         {
@@ -47,24 +53,34 @@ namespace EndlessRunner
 
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyState = Keyboard.GetState();
 
-
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(Keys.Escape)) Exit();
+            if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
             // Player Movement
-            if (state.IsKeyDown(Keys.D))
-                texturePos.X += 10;
-            if (state.IsKeyDown(Keys.A))
-                texturePos.X -= 10;
+            if (keyState.IsKeyDown(Keys.D))
+                texturePos.X += velocity.X;
+            if (keyState.IsKeyDown(Keys.A))
+                texturePos.X -= velocity.X;
 
             // Previous state requires discrete presses, W cannot be held down
-            if (state.IsKeyDown(Keys.W) && !previousState.IsKeyDown(Keys.W))
-                texturePos.Y -= 10;
+            if (keyState.IsKeyDown(Keys.W) && !previousState.IsKeyDown(Keys.W) && hasJumped == false)
+            {
+                texturePos.Y -= velocity.Y;
+                hasJumped = true;
+            }
+
+            if (texturePos.Y >= 500)
+            {
+                hasJumped = false;
+                texturePos.Y = 500;
+            }
+
+            // gravity and friction
+            texturePos.Y += velocity.Y * gravity;
 
             base.Update(gameTime);
-            previousState = state;
+            previousState = keyState;
         }
 
         protected override void Draw(GameTime gameTime)
