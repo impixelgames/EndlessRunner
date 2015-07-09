@@ -9,6 +9,8 @@ namespace EndlessRunner
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D texture;
+        Vector2 texturePos;
         
         public Game1()
         {
@@ -16,6 +18,9 @@ namespace EndlessRunner
             graphics.PreferredBackBufferHeight = 540;
             graphics.PreferredBackBufferWidth = 960;
             Content.RootDirectory = "Content";
+
+            // base
+            texturePos = new Vector2(50, 500);
         }
 
         protected override void Initialize()
@@ -29,7 +34,7 @@ namespace EndlessRunner
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            texture = this.Content.Load<Texture2D>("fishie");
             // TODO: use this.Content to load your game content here
         }
 
@@ -53,6 +58,9 @@ namespace EndlessRunner
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, texturePos);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
