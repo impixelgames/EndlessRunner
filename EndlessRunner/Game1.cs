@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Text;
 
 namespace EndlessRunner
 {
@@ -11,6 +12,7 @@ namespace EndlessRunner
         SpriteBatch spriteBatch;
         Texture2D texture;
         Vector2 texturePos;
+        KeyboardState previousState;
         
         public Game1()
         {
@@ -45,12 +47,24 @@ namespace EndlessRunner
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
-            // TODO: Add your update logic here
+
+            KeyboardState state = Keyboard.GetState();
+
+            if (state.IsKeyDown(Keys.Escape)) Exit();
+
+            // Player Movement
+            if (state.IsKeyDown(Keys.D))
+                texturePos.X += 10;
+            if (state.IsKeyDown(Keys.A))
+                texturePos.X -= 10;
+
+            // Previous state requires discrete presses, W cannot be held down
+            if (state.IsKeyDown(Keys.W) && !previousState.IsKeyDown(Keys.W))
+                texturePos.Y -= 10;
 
             base.Update(gameTime);
+            previousState = state;
         }
 
         protected override void Draw(GameTime gameTime)
