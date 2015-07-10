@@ -58,8 +58,11 @@ namespace EndlessRunner
 
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
+            if (keyState.IsKeyUp(Keys.W) && texturePos.Y <= 500)
+                hasJumped = true;
+
             if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
-            {
+            {                
                 playerJump(keyState);
             }
 
@@ -92,12 +95,12 @@ namespace EndlessRunner
 
         public void playerJump(KeyboardState state) {
             // bgFloor is the bottom platform
-            texturePos.Y -= velocity.Y;
-            if (state.IsKeyUp(Keys.W) || (bgFloor - texturePos.Y) >= 100f)
+            if ((bgFloor - texturePos.Y) >= 100f)
             {
                 hasJumped = true;
                 velocity.Y = 7;
             }
+            texturePos.Y -= velocity.Y;
         }
     }
 }
