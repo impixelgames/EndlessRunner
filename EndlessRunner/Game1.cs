@@ -15,10 +15,11 @@ namespace EndlessRunner
         KeyboardState previousState;
 
         // game variables
-        float gravity = 0.09f;
+        float gravity = 0.15f;
         float friction = 0.3f;
         float bgFloor = 450f;
-        Vector2 velocity = new Vector2(10, 10);
+        Vector2 velocity = new Vector2(0, 750);
+        float baseVel = 750;
         bool hasJumped = false;
         
         public Game1()
@@ -54,7 +55,8 @@ namespace EndlessRunner
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState keyState = Keyboard.GetState();
+            KeyboardState keyState = Keyboard.GetState(); 
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
@@ -64,16 +66,16 @@ namespace EndlessRunner
 
             if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
             {
-                velocity.Y = 10;
-                playerJump(keyState);
+                velocity.Y = baseVel;
+                playerJump(keyState, delta);
             }
 
             // Affect player location with gravity
             // Prevents player from exiting the bottom of window
             if (texturePos.Y <= bgFloor)
             {
-                texturePos.Y += velocity.Y * (gravity);
-                velocity.Y += gravity * 45;
+                texturePos.Y += velocity.Y * delta * gravity;
+                velocity.Y += gravity * 1000;
             }
             else
             {
@@ -96,14 +98,14 @@ namespace EndlessRunner
             base.Draw(gameTime);
         }
 
-        public void playerJump(KeyboardState state) {
+        public void playerJump(KeyboardState state, float dt) {
             // bgFloor is the bottom platform
             if ((bgFloor - texturePos.Y) >= 225f)
             {
                 hasJumped = true;
-                velocity.Y = 10;
+                velocity.Y = baseVel;
             }
-            texturePos.Y -= velocity.Y;
+            texturePos.Y -= velocity.Y * dt;
         }
     }
 }
