@@ -10,7 +10,7 @@ namespace EndlessRunner
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Sprite player = new Sprite();
+        Player player = new Player();
         KeyboardState previousState;
 
         // Constants
@@ -93,22 +93,6 @@ namespace EndlessRunner
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            //time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //while (time > frameTime)
-            //{
-            //    // Play the next frame in the SpriteSheet
-            //    frameIndex++;
-
-            //    // reset elapsed time
-            //    time = 0f;
-            //}
-            //if (frameIndex > totalFrames) frameIndex = 1;
-            //Rectangle source = new Rectangle(frameIndex * frameWidth,
-            //                                 0, frameWidth, frameHeight);
-            //Vector2 position = new Vector2(this.Window.ClientBounds.Width / 2,
-            //                   this.Window.ClientBounds.Height / 2);
-            //Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
 
             if (numObstacles == 0)
             {
