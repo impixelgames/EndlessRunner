@@ -15,9 +15,10 @@ namespace EndlessRunner
         KeyboardState previousState;
 
         // game variables
-        float gravity = 0.04f;
+        float gravity = 0.03f;
         float friction = 0.3f;
-        Vector2 velocity = new Vector2(10, 125);
+        float bgFloor = 450f;
+        Vector2 velocity = new Vector2(10, 7);
         bool hasJumped = false;
         
         public Game1()
@@ -28,7 +29,7 @@ namespace EndlessRunner
             Content.RootDirectory = "Content";
 
             // base
-            texturePos = new Vector2(50, 500);
+            texturePos = new Vector2(50, bgFloor);
         }
 
         protected override void Initialize()
@@ -57,27 +58,21 @@ namespace EndlessRunner
 
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
-            // Player Movement
-            if (keyState.IsKeyDown(Keys.D))
-                texturePos.X += velocity.X;
-            if (keyState.IsKeyDown(Keys.A))
-                texturePos.X -= velocity.X;
-
-            // Previous state requires discrete presses, W cannot be held down
-            if (keyState.IsKeyDown(Keys.W) && !previousState.IsKeyDown(Keys.W) && hasJumped == false)
+            if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
             {
-                texturePos.Y -= velocity.Y;
-                hasJumped = true;
+                playerJump(keyState);
             }
 
-            if (texturePos.Y >= 500)
+            // Affect player location with gravity
+            // Prevents player from exiting the bottom of window
+            if (texturePos.Y <= bgFloor)
+            {
+                texturePos.Y += velocity.Y * (gravity * 15);
+            }
+            else
             {
                 hasJumped = false;
-                texturePos.Y = 500;
             }
-
-            // gravity and friction
-            texturePos.Y += velocity.Y * gravity;
 
             base.Update(gameTime);
             previousState = keyState;
@@ -93,6 +88,16 @@ namespace EndlessRunner
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void playerJump(KeyboardState state) {
+            // bgFloor is the bottom platform
+            texturePos.Y -= velocity.Y;
+            if (state.IsKeyUp(Keys.W) || (bgFloor - texturePos.Y) >= 100f)
+            {
+                hasJumped = true;
+                velocity.Y = 7;
+            }
         }
     }
 }
