@@ -17,10 +17,6 @@ namespace EndlessRunner
         float gravity = 0.15f;
         float bgFloor = 450f;
         float baseVel = 750;
-
-        // Player variables
-        Vector2 velocity = new Vector2(0, 750);
-        bool hasJumped = false;
         
         // Non-player variables
         Obstacle obs = new Obstacle();
@@ -35,6 +31,8 @@ namespace EndlessRunner
 
             // base
             player.Position = new Vector2(50, bgFloor);
+            player.Velocity = 750;
+            player.hasJumped = false;
         }
 
         protected override void Initialize()
@@ -66,11 +64,11 @@ namespace EndlessRunner
 
             // Prevent multiple jumps
             if (keyState.IsKeyUp(Keys.W) && player.Position.Y <= 500)
-                hasJumped = true;
+                player.hasJumped = true;
 
-            if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
+            if (keyState.IsKeyDown(Keys.W) && player.hasJumped == false)
             {
-                velocity.Y = baseVel;
+                player.Velocity = baseVel;
                 playerJump(keyState, delta);
             }
 
@@ -78,12 +76,12 @@ namespace EndlessRunner
             // Prevents player from exiting the bottom of window
             if (player.Position.Y <= bgFloor)
             {
-                player.Position = new Vector2(50, player.Position.Y + velocity.Y * delta * gravity);
-                velocity.Y += gravity * 1000;
+                player.Position = new Vector2(50, player.Position.Y + player.Velocity * delta * gravity);
+                player.Velocity += gravity * 1000;
             }
             else
             {
-                hasJumped = false;
+                player.hasJumped = false;
             }
 
             obs.Position = new Vector2(obs.Position.X - obs.Velocity * delta, obs.Position.Y);
@@ -133,11 +131,11 @@ namespace EndlessRunner
             // bgFloor is the bottom platform
             if ((bgFloor - player.Position.Y) >= 125f)
             {
-                hasJumped = true;
-                velocity.Y = baseVel;
+                player.hasJumped = true;
+                player.Velocity = baseVel;
             }
             //player.Position.Y -= velocity.Y * dt;
-            player.Position = new Vector2(50, player.Position.Y - velocity.Y * dt);
+            player.Position = new Vector2(50, player.Position.Y - player.Velocity * dt);
         }
     }
 }

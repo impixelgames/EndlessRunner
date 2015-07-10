@@ -16,6 +16,10 @@ namespace EndlessRunner
 
         public Vector2 Position { get; set; }
 
+        public float Velocity { get; set; }
+
+        public bool hasJumped { get; set; }
+
         public void SetSpriteSheet(GameTime gameTime) {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             float frameTime = 0.2f;
