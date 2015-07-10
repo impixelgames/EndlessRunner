@@ -15,10 +15,10 @@ namespace EndlessRunner
         KeyboardState previousState;
 
         // game variables
-        float gravity = 0.03f;
+        float gravity = 0.06f;
         float friction = 0.3f;
         float bgFloor = 450f;
-        Vector2 velocity = new Vector2(10, 7);
+        Vector2 velocity = new Vector2(10, 10);
         bool hasJumped = false;
         
         public Game1()
@@ -58,11 +58,13 @@ namespace EndlessRunner
 
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
+            // Prevent multiple jumps
             if (keyState.IsKeyUp(Keys.W) && texturePos.Y <= 500)
                 hasJumped = true;
 
             if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
-            {                
+            {
+                velocity.Y = 10;
                 playerJump(keyState);
             }
 
@@ -70,7 +72,8 @@ namespace EndlessRunner
             // Prevents player from exiting the bottom of window
             if (texturePos.Y <= bgFloor)
             {
-                texturePos.Y += velocity.Y * (gravity * 15);
+                texturePos.Y += velocity.Y * (gravity);
+                velocity.Y += gravity*45;
             }
             else
             {
@@ -98,7 +101,7 @@ namespace EndlessRunner
             if ((bgFloor - texturePos.Y) >= 100f)
             {
                 hasJumped = true;
-                velocity.Y = 7;
+                velocity.Y = 10;
             }
             texturePos.Y -= velocity.Y;
         }
