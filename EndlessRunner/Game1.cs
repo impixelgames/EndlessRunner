@@ -10,18 +10,21 @@ namespace EndlessRunner
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D texture;
-        Vector2 texturePos;
+        Sprite player = new Sprite();
         KeyboardState previousState;
 
-        // game variables
+        // Constants
         float gravity = 0.15f;
-        float friction = 0.3f;
         float bgFloor = 450f;
-        Vector2 velocity = new Vector2(0, 750);
         float baseVel = 750;
+
+        // Player Variables
+        Vector2 velocity = new Vector2(0, 750);
         bool hasJumped = false;
         
+        // obstacles
+        //Obstacle obs = new Obstacle();
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +33,7 @@ namespace EndlessRunner
             Content.RootDirectory = "Content";
 
             // base
-            texturePos = new Vector2(50, bgFloor);
+            player.Position = new Vector2(50, bgFloor);
         }
 
         protected override void Initialize()
@@ -44,7 +47,8 @@ namespace EndlessRunner
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            texture = this.Content.Load<Texture2D>("fishie");
+            player.Texture = this.Content.Load<Texture2D>("fishie2");
+           
             // TODO: use this.Content to load your game content here
         }
 
@@ -61,7 +65,7 @@ namespace EndlessRunner
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
             // Prevent multiple jumps
-            if (keyState.IsKeyUp(Keys.W) && texturePos.Y <= 500)
+            if (keyState.IsKeyUp(Keys.W) && player.Position.Y <= 500)
                 hasJumped = true;
 
             if (keyState.IsKeyDown(Keys.W) && hasJumped == false)
@@ -72,9 +76,10 @@ namespace EndlessRunner
 
             // Affect player location with gravity
             // Prevents player from exiting the bottom of window
-            if (texturePos.Y <= bgFloor)
+            if (player.Position.Y <= bgFloor)
             {
-                texturePos.Y += velocity.Y * delta * gravity;
+                //player.Position.Y = player.Position.Y + velocity.Y * delta * gravity;
+                player.Position = new Vector2(50, player.Position.Y + velocity.Y * delta * gravity);
                 velocity.Y += gravity * 1000;
             }
             else
@@ -90,9 +95,27 @@ namespace EndlessRunner
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //while (time > frameTime)
+            //{
+            //    // Play the next frame in the SpriteSheet
+            //    frameIndex++;
+
+            //    // reset elapsed time
+            //    time = 0f;
+            //}
+            //if (frameIndex > totalFrames) frameIndex = 1;
+            //Rectangle source = new Rectangle(frameIndex * frameWidth,
+            //                                 0, frameWidth, frameHeight);
+            //Vector2 position = new Vector2(this.Window.ClientBounds.Width / 2,
+            //                   this.Window.ClientBounds.Height / 2);
+            //Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
+
             // TODO: Add your drawing code here
+
             spriteBatch.Begin();
-            spriteBatch.Draw(texture, texturePos);
+            spriteBatch.Draw(player.Texture, player.Position);
+            //spriteBatch.Draw(spriteSheet, position, source, Color.White, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -100,12 +123,13 @@ namespace EndlessRunner
 
         public void playerJump(KeyboardState state, float dt) {
             // bgFloor is the bottom platform
-            if ((bgFloor - texturePos.Y) >= 225f)
+            if ((bgFloor - player.Position.Y) >= 125f)
             {
                 hasJumped = true;
                 velocity.Y = baseVel;
             }
-            texturePos.Y -= velocity.Y * dt;
+            //player.Position.Y -= velocity.Y * dt;
+            player.Position = new Vector2(50, player.Position.Y - velocity.Y * dt);
         }
     }
 }
