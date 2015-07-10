@@ -18,12 +18,13 @@ namespace EndlessRunner
         float bgFloor = 450f;
         float baseVel = 750;
 
-        // Player Variables
+        // Player variables
         Vector2 velocity = new Vector2(0, 750);
         bool hasJumped = false;
         
-        // obstacles
-        //Obstacle obs = new Obstacle();
+        // Non-player variables
+        Obstacle obs = new Obstacle();
+        int numObstacles = 0;
 
         public Game1()
         {
@@ -38,8 +39,6 @@ namespace EndlessRunner
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -48,13 +47,14 @@ namespace EndlessRunner
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player.Texture = this.Content.Load<Texture2D>("fishie2");
+            obs.Texture = this.Content.Load<Texture2D>("fishie"); 
+            obs.Velocity = 500f;
            
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -78,7 +78,6 @@ namespace EndlessRunner
             // Prevents player from exiting the bottom of window
             if (player.Position.Y <= bgFloor)
             {
-                //player.Position.Y = player.Position.Y + velocity.Y * delta * gravity;
                 player.Position = new Vector2(50, player.Position.Y + velocity.Y * delta * gravity);
                 velocity.Y += gravity * 1000;
             }
@@ -86,6 +85,8 @@ namespace EndlessRunner
             {
                 hasJumped = false;
             }
+
+            obs.Position = new Vector2(obs.Position.X - obs.Velocity * delta, obs.Position.Y);
 
             base.Update(gameTime);
             previousState = keyState;
@@ -111,11 +112,18 @@ namespace EndlessRunner
             //                   this.Window.ClientBounds.Height / 2);
             //Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
 
-            // TODO: Add your drawing code here
+            if (numObstacles == 0)
+            {
+                obs.GenerateObstacle();
+                numObstacles++;
+            }
+
+            if (obs.Position.X <= 0)
+                numObstacles = 0;
 
             spriteBatch.Begin();
             spriteBatch.Draw(player.Texture, player.Position);
-            //spriteBatch.Draw(spriteSheet, position, source, Color.White, 0.0f, origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(obs.Texture, obs.Position);
             spriteBatch.End();
 
             base.Draw(gameTime);
