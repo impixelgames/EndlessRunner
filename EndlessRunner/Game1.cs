@@ -15,7 +15,7 @@ namespace EndlessRunner
         KeyboardState previousState;
 
         // game variables
-        float gravity = 0.06f;
+        float gravity = 0.09f;
         float friction = 0.3f;
         float bgFloor = 450f;
         Vector2 velocity = new Vector2(10, 10);
@@ -73,7 +73,7 @@ namespace EndlessRunner
             if (texturePos.Y <= bgFloor)
             {
                 texturePos.Y += velocity.Y * (gravity);
-                velocity.Y += gravity*45;
+                velocity.Y += gravity * 45;
             }
             else
             {
@@ -98,7 +98,7 @@ namespace EndlessRunner
 
         public void playerJump(KeyboardState state) {
             // bgFloor is the bottom platform
-            if ((bgFloor - texturePos.Y) >= 100f)
+            if ((bgFloor - texturePos.Y) >= 225f)
             {
                 hasJumped = true;
                 velocity.Y = 10;
