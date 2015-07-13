@@ -10,7 +10,7 @@ namespace EndlessRunner
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Player player = new Player();
+        Player player;
         KeyboardState previousState;
 
         // Constants
@@ -28,11 +28,6 @@ namespace EndlessRunner
             graphics.PreferredBackBufferHeight = 540;
             graphics.PreferredBackBufferWidth = 960;
             Content.RootDirectory = "Content";
-
-            // base
-            player.Position = new Vector2(50, bgFloor);
-            player.Velocity = 750;
-            player.hasJumped = false;
         }
 
         protected override void Initialize()
@@ -44,9 +39,15 @@ namespace EndlessRunner
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player.Texture = this.Content.Load<Texture2D>("fishie2");
+            //player.Texture = this.Content.Load<Texture2D>("fishie2");
+            Texture2D texture = this.Content.Load<Texture2D>("running2ver1");
             obs.Texture = this.Content.Load<Texture2D>("fishie"); 
             obs.Velocity = 500f;
+
+            // Main Character
+            player = new Player(texture, 5, 4);
+            player.Velocity = 750;
+            player.hasJumped = false;
            
         }
 
@@ -86,6 +87,8 @@ namespace EndlessRunner
 
             obs.Position = new Vector2(obs.Position.X - obs.Velocity * delta, obs.Position.Y);
 
+            player.Update();
+
             base.Update(gameTime);
             previousState = keyState;
         }
@@ -103,8 +106,10 @@ namespace EndlessRunner
             if (obs.Position.X <= 0)
                 numObstacles = 0;
 
+            player.Draw(spriteBatch, player.Position);
+
             spriteBatch.Begin();
-            spriteBatch.Draw(player.Texture, player.Position);
+            //player.Draw(spriteBatch, player.Position);
             spriteBatch.Draw(obs.Texture, obs.Position);
             spriteBatch.End();
 
@@ -118,8 +123,12 @@ namespace EndlessRunner
                 player.hasJumped = true;
                 player.Velocity = baseVel;
             }
+            else
+            {
+                player.Position = new Vector2(50, player.Position.Y - player.Velocity * dt);
+            }
             //player.Position.Y -= velocity.Y * dt;
-            player.Position = new Vector2(50, player.Position.Y - player.Velocity * dt);
+            
         }
     }
 }
