@@ -19,8 +19,7 @@ namespace EndlessRunner
         float baseVel = 750;
         
         // Non-player variables
-        Obstacle obs = new Obstacle();
-        int numObstacles = 0;
+        Obstacle fish;
 
         public Game1()
         {
@@ -39,10 +38,13 @@ namespace EndlessRunner
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //player.Texture = this.Content.Load<Texture2D>("fishie2");
+            
+            // Load Textures
             Texture2D texture = this.Content.Load<Texture2D>("try4");
-            obs.Texture = this.Content.Load<Texture2D>("fishie"); 
-            obs.Velocity = 500f;
+            Texture2D fishTexture = this.Content.Load<Texture2D>("fishie");
+
+            // Obstacles
+            fish = new Obstacle(fishTexture, 32, 500f);
 
             // Main Character
             player = new Player(texture, 2, 20);
@@ -85,7 +87,7 @@ namespace EndlessRunner
                 player.hasJumped = false;
             }
 
-            obs.Position = new Vector2(obs.Position.X - obs.Velocity * delta, obs.Position.Y);
+            fish.Position = new Vector2(fish.Position.X - fish.Velocity * delta, fish.Position.Y);
 
             player.Update();
 
@@ -97,21 +99,16 @@ namespace EndlessRunner
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            if (numObstacles == 0)
+            if (fish.GetObstacles() == 0)
             {
-                obs.GenerateObstacle();
-                numObstacles++;
+                fish.GenerateObstacle(400, 520);
             }
 
-            if (obs.Position.X <= 0)
-                numObstacles = 0;
+            if (fish.Position.X <= 0)
+                fish.ResetObstacles();
 
             player.Draw(spriteBatch, player.Position);
-
-            spriteBatch.Begin();
-            //player.Draw(spriteBatch, player.Position);
-            spriteBatch.Draw(obs.Texture, obs.Position);
-            spriteBatch.End();
+            fish.Draw(spriteBatch, fish.Position);
 
             base.Draw(gameTime);
         }
