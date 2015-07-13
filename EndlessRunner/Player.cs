@@ -54,5 +54,18 @@ namespace EndlessRunner
             spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
             spriteBatch.End();
         }
+
+        public void Jump(KeyboardState state, float dt, float maxHeight, float defaultVel)
+        {
+            if ((maxHeight - this.Position.Y) >= 125f)
+            {
+                this.hasJumped = true;
+                this.Velocity = defaultVel;
+            }
+            else
+            {
+                this.Position = new Vector2(50, this.Position.Y - this.Velocity * dt);
+            }
+        }
     }
 }

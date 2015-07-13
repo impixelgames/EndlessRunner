@@ -33,7 +33,6 @@ namespace EndlessRunner
 
             this.Position = new Vector2(x, y);
             numObstacles++;
-            return;
         }
 
         public void DecrementObstacles()

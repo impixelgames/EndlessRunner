@@ -72,7 +72,7 @@ namespace EndlessRunner
             if (keyState.IsKeyDown(Keys.W) && player.hasJumped == false)
             {
                 player.Velocity = baseVel;
-                playerJump(keyState, delta);
+                player.Jump(keyState, delta, bgFloor, baseVel);
             }
 
             // Affect player location with gravity
@@ -106,26 +106,14 @@ namespace EndlessRunner
 
             if (fish.Position.X <= 0)
                 fish.ResetObstacles();
-
+        
+            // spritebatch begin
             player.Draw(spriteBatch, player.Position);
             fish.Draw(spriteBatch, fish.Position);
+            // spritebatch end
 
             base.Draw(gameTime);
         }
 
-        public void playerJump(KeyboardState state, float dt) {
-            // bgFloor is the bottom platform
-            if ((bgFloor - player.Position.Y) >= 125f)
-            {
-                player.hasJumped = true;
-                player.Velocity = baseVel;
-            }
-            else
-            {
-                player.Position = new Vector2(50, player.Position.Y - player.Velocity * dt);
-            }
-            //player.Position.Y -= velocity.Y * dt;
-            
-        }
     }
 }
