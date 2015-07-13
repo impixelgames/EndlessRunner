@@ -45,7 +45,7 @@ namespace EndlessRunner
             obs.Velocity = 500f;
 
             // Main Character
-            player = new Player(texture, 5, 4);
+            player = new Player(texture, 4, 5);
             player.Velocity = 750;
             player.hasJumped = false;
            
