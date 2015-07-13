@@ -40,12 +40,12 @@ namespace EndlessRunner
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //player.Texture = this.Content.Load<Texture2D>("fishie2");
-            Texture2D texture = this.Content.Load<Texture2D>("running2ver1");
+            Texture2D texture = this.Content.Load<Texture2D>("try4");
             obs.Texture = this.Content.Load<Texture2D>("fishie"); 
             obs.Velocity = 500f;
 
             // Main Character
-            player = new Player(texture, 4, 5);
+            player = new Player(texture, 2, 20);
             player.Velocity = 750;
             player.hasJumped = false;
            
