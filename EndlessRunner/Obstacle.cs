@@ -50,6 +50,12 @@ namespace EndlessRunner
             return numObstacles;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position = new Vector2(Position.X - Velocity * delta, Position.Y);
+        }
+
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
         {
             spriteBatch.Begin();

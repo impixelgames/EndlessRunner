@@ -17,11 +17,6 @@ namespace EndlessRunner
         // Parallax Backgrounds
         List<Background> Backgrounds;
         Vector2 direction;
-
-        // Constants
-        float gravity = 0.15f;
-        float bgFloor = 450f;
-        float baseVel = 750;
         
         // Non-player variables
         Obstacle fish;
@@ -47,12 +42,14 @@ namespace EndlessRunner
             // Load Textures
             Texture2D texture = this.Content.Load<Texture2D>("try4");
             Texture2D fishTexture = this.Content.Load<Texture2D>("fishie");
-            Texture2D bgTexture = this.Content.Load<Texture2D>("background3");
+            Texture2D bgTexture3 = this.Content.Load<Texture2D>("background3");
+            Texture2D bgTexture2 = this.Content.Load<Texture2D>("goingbw");
 
             // Backgrounds
             direction = new Vector2(1, 0);
             Backgrounds = new List<Background>();
-            Backgrounds.Add(new Background(bgTexture, new Vector2(50, 0), 1.2f));
+            Backgrounds.Add(new Background(bgTexture3, new Vector2(50, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture2, new Vector2(100, 0), 1f));
 
             // Obstacles
             fish = new Obstacle(fishTexture, 32, 500f);
@@ -76,36 +73,12 @@ namespace EndlessRunner
 
             if (keyState.IsKeyDown(Keys.Escape)) Exit();
 
-            // Prevent multiple jumps
-            if (keyState.IsKeyUp(Keys.W) && player.Position.Y <= 500)
-                player.hasJumped = true;
-
-            if (keyState.IsKeyDown(Keys.W) && player.hasJumped == false)
-            {
-                player.Velocity = baseVel;
-                player.Jump(keyState, delta, bgFloor, baseVel);
-            }
-
-            // Affect player location with gravity
-            // Prevents player from exiting the bottom of window
-            if (player.Position.Y <= bgFloor)
-            {
-                player.Position = new Vector2(50, player.Position.Y + player.Velocity * delta * gravity);
-                player.Velocity += gravity * 1000;
-            }
-            else
-            {
-                player.hasJumped = false;
-            }
-
-
-
-            fish.Position = new Vector2(fish.Position.X - fish.Velocity * delta, fish.Position.Y);
-
+            // Call Update functions for Objects
             foreach (Background bg in Backgrounds)
                 bg.Update(gameTime, direction, GraphicsDevice.Viewport);
 
-            player.Update();
+            player.Update(keyState, gameTime);
+            fish.Update(gameTime);
 
             base.Update(gameTime);
             previousState = keyState;
