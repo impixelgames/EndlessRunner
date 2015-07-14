@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Text;
 
 namespace EndlessRunner
@@ -12,6 +13,10 @@ namespace EndlessRunner
         SpriteBatch spriteBatch;
         Player player;
         KeyboardState previousState;
+
+        // Parallax Backgrounds
+        List<Background> Backgrounds;
+        Vector2 direction;
 
         // Constants
         float gravity = 0.15f;
@@ -42,6 +47,12 @@ namespace EndlessRunner
             // Load Textures
             Texture2D texture = this.Content.Load<Texture2D>("try4");
             Texture2D fishTexture = this.Content.Load<Texture2D>("fishie");
+            Texture2D bgTexture = this.Content.Load<Texture2D>("background3");
+
+            // Backgrounds
+            direction = new Vector2(1, 0);
+            Backgrounds = new List<Background>();
+            Backgrounds.Add(new Background(bgTexture, new Vector2(50, 0), 1.2f));
 
             // Obstacles
             fish = new Obstacle(fishTexture, 32, 500f);
@@ -87,7 +98,12 @@ namespace EndlessRunner
                 player.hasJumped = false;
             }
 
+
+
             fish.Position = new Vector2(fish.Position.X - fish.Velocity * delta, fish.Position.Y);
+
+            foreach (Background bg in Backgrounds)
+                bg.Update(gameTime, direction, GraphicsDevice.Viewport);
 
             player.Update();
 
@@ -107,6 +123,12 @@ namespace EndlessRunner
             if (fish.Position.X <= 0)
                 fish.ResetObstacles();
         
+            // Avoid multiple spritebatch calls for backgrounds
+            spriteBatch.Begin();
+            foreach (Background bg in Backgrounds)
+                bg.Draw(spriteBatch);
+            spriteBatch.End();
+
             // spritebatch begin
             player.Draw(spriteBatch, player.Position);
             fish.Draw(spriteBatch, fish.Position);
