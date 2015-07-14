@@ -43,7 +43,7 @@ namespace EndlessRunner
             Texture2D texture = this.Content.Load<Texture2D>("try4");
             Texture2D fishTexture = this.Content.Load<Texture2D>("fishie");
             Texture2D bgTexture3 = this.Content.Load<Texture2D>("background3");
-            Texture2D bgTexture2 = this.Content.Load<Texture2D>("goingbw");
+            Texture2D bgTexture2 = this.Content.Load<Texture2D>("background2ver1");
 
             // Backgrounds
             direction = new Vector2(1, 0);
