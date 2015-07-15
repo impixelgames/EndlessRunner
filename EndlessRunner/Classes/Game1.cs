@@ -97,7 +97,7 @@ namespace EndlessRunner
                 trash.ResetObstacles();
         
             // Avoid multiple spritebatch calls for backgrounds
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
             foreach (Background bg in Backgrounds)
                 bg.Draw(spriteBatch);
             spriteBatch.End();

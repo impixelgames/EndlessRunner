@@ -30,7 +30,6 @@ namespace EndlessRunner
         /// </summary>
         
         private Texture2D Texture;
-        private Vector2 Offset;
         private Vector2 Speed;
         private Vector2 TextureSize;
         private Vector2 screenPos;
@@ -39,16 +38,9 @@ namespace EndlessRunner
 
         private Viewport Viewport;
 
-        private Rectangle Rectangle
-        {
-            // Rectangle: X, Y, Width, Height
-            get { return new Rectangle((int)(Offset.X), (int)(Offset.Y), (int)(Viewport.Width / Zoom), (int)(Viewport.Height / Zoom)); }
-        }
-
         public Background(Texture2D texture, Vector2 speed, float zoom)
         {
-            Texture = texture;
-            Offset = Vector2.Zero;
+            Texture = texture;            
             screenPos = Vector2.Zero;
             Speed = speed;
             Zoom = zoom;
@@ -62,23 +54,22 @@ namespace EndlessRunner
             screenWidth = Viewport.Width;
 
             Vector2 distance = Speed * elapsed;
-            //Offset += distance;
-            //Offset.X = (Offset.X % TextureSize.X);
 
-            screenPos -= distance;
+            screenPos += distance;
             screenPos.X = screenPos.X % Texture.Width;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            var source = new Rectangle((int)screenPos.X, 0, Texture.Width, Texture.Height);
+            var sourceLoop = new Rectangle((int)screenPos.X - (int)TextureSize.X, 0, Texture.Width, Texture.Height);
+
             if (screenPos.X < screenWidth)
             {
-                //spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y), Rectangle, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
-                spriteBatch.Draw(Texture, screenPos, null, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 0f);
+                spriteBatch.Draw(Texture, new Vector2(0, 0), source, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 0f);
             }
 
-            //spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y) - TextureSize, Rectangle, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
-            spriteBatch.Draw(Texture, screenPos - TextureSize, null, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, new Vector2(0, 0), sourceLoop, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 0f);
         }
     }
 }
