@@ -19,7 +19,7 @@ namespace EndlessRunner
         private int width;
         private int height;
         private int timeSinceLastFrame = 0;
-        private int millisecondsPerFrame = 5;
+        private int millisecondsPerFrame = 100;
 
         public Player(Texture2D texture, int rows, int columns)
         {

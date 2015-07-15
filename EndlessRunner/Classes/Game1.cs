@@ -39,23 +39,23 @@ namespace EndlessRunner
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // Load Textures
-            Texture2D texture = this.Content.Load<Texture2D>("try4");
+            Texture2D texture = this.Content.Load<Texture2D>("player");
             Texture2D trashTexture = this.Content.Load<Texture2D>("trashbagv1");
             Texture2D bgTexture3 = this.Content.Load<Texture2D>("background3");
             Texture2D bgTexture2 = this.Content.Load<Texture2D>("background2ver1");
-            //Texture2D bgTexture1 = this.Content.Load<Texture2D>("background1");
+            Texture2D bgTexture1 = this.Content.Load<Texture2D>("bg1");
 
             // Backgrounds
             Backgrounds = new List<Background>();
             Backgrounds.Add(new Background(bgTexture3, new Vector2(50, 0), 1f));
-            Backgrounds.Add(new Background(bgTexture2, new Vector2(100, 0), 1f));
-            //Backgrounds.Add(new Background(bgTexture1, new Vector2(150, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture2, new Vector2(125, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture1, new Vector2(200, 0), 1f));
 
             // Obstacles
             trash = new Obstacle(trashTexture, 32, 200f);
 
             // Main Character
-            player = new Player(texture, 2, 20);
+            player = new Player(texture, 1, 8);
             player.Velocity = 750;
             player.hasJumped = false;
            
