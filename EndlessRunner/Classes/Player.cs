@@ -18,6 +18,8 @@ namespace EndlessRunner
         private int totalFrames;
         private int width;
         private int height;
+        private int timeSinceLastFrame = 0;
+        private int millisecondsPerFrame = 5;
 
         public Player(Texture2D texture, int rows, int columns)
         {
@@ -37,9 +39,16 @@ namespace EndlessRunner
 
         public void Update(KeyboardState keyState, GameTime gameTime)
         {
-            currentFrame++;
-            if (currentFrame == totalFrames)
-                currentFrame = 0;
+
+            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (timeSinceLastFrame > millisecondsPerFrame)
+            {
+                timeSinceLastFrame -= millisecondsPerFrame;
+                currentFrame++;
+                if (currentFrame == totalFrames)
+                    currentFrame = 0;
+            }
 
             // Check for Key input
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;

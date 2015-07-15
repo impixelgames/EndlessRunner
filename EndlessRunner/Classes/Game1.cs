@@ -19,7 +19,7 @@ namespace EndlessRunner
         Vector2 direction;
         
         // Non-player variables
-        Obstacle fish;
+        Obstacle trash;
 
         public Game1()
         {
@@ -41,18 +41,20 @@ namespace EndlessRunner
             
             // Load Textures
             Texture2D texture = this.Content.Load<Texture2D>("try4");
-            Texture2D fishTexture = this.Content.Load<Texture2D>("fishie");
+            Texture2D trashTexture = this.Content.Load<Texture2D>("trashbagv1");
             Texture2D bgTexture3 = this.Content.Load<Texture2D>("background3");
             Texture2D bgTexture2 = this.Content.Load<Texture2D>("background2ver1");
+            //Texture2D bgTexture1 = this.Content.Load<Texture2D>("background1");
 
             // Backgrounds
             direction = new Vector2(1, 0);
             Backgrounds = new List<Background>();
             Backgrounds.Add(new Background(bgTexture3, new Vector2(50, 0), 1f));
             Backgrounds.Add(new Background(bgTexture2, new Vector2(100, 0), 1f));
+            //Backgrounds.Add(new Background(bgTexture1, new Vector2(150, 0), 1f));
 
             // Obstacles
-            fish = new Obstacle(fishTexture, 32, 500f);
+            trash = new Obstacle(trashTexture, 32, 200f);
 
             // Main Character
             player = new Player(texture, 2, 20);
@@ -78,7 +80,7 @@ namespace EndlessRunner
                 bg.Update(gameTime, direction, GraphicsDevice.Viewport);
 
             player.Update(keyState, gameTime);
-            fish.Update(gameTime);
+            trash.Update(gameTime);
 
             base.Update(gameTime);
             previousState = keyState;
@@ -88,13 +90,13 @@ namespace EndlessRunner
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            if (fish.GetObstacles() == 0)
+            if (trash.GetObstacles() == 0)
             {
-                fish.GenerateObstacle(400, 520);
+                trash.GenerateObstacle(488, 520);
             }
 
-            if (fish.Position.X <= 0)
-                fish.ResetObstacles();
+            if (trash.Position.X <= 0)
+                trash.ResetObstacles();
         
             // Avoid multiple spritebatch calls for backgrounds
             spriteBatch.Begin();
@@ -102,10 +104,8 @@ namespace EndlessRunner
                 bg.Draw(spriteBatch);
             spriteBatch.End();
 
-            // spritebatch begin
             player.Draw(spriteBatch, player.Position);
-            fish.Draw(spriteBatch, fish.Position);
-            // spritebatch end
+            trash.Draw(spriteBatch, trash.Position);
 
             base.Draw(gameTime);
         }
