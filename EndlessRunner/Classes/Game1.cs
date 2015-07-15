@@ -16,7 +16,6 @@ namespace EndlessRunner
 
         // Parallax Backgrounds
         List<Background> Backgrounds;
-        Vector2 direction;
         
         // Non-player variables
         Obstacle trash;
@@ -47,7 +46,6 @@ namespace EndlessRunner
             //Texture2D bgTexture1 = this.Content.Load<Texture2D>("background1");
 
             // Backgrounds
-            direction = new Vector2(1, 0);
             Backgrounds = new List<Background>();
             Backgrounds.Add(new Background(bgTexture3, new Vector2(50, 0), 1f));
             Backgrounds.Add(new Background(bgTexture2, new Vector2(100, 0), 1f));
@@ -77,7 +75,7 @@ namespace EndlessRunner
 
             // Call Update functions for Objects
             foreach (Background bg in Backgrounds)
-                bg.Update(gameTime, direction, GraphicsDevice.Viewport);
+                bg.Update(gameTime, GraphicsDevice.Viewport);
 
             player.Update(keyState, gameTime);
             trash.Update(gameTime);
