@@ -94,7 +94,7 @@ namespace EndlessRunner
 
             if (trash.GetObstacles() == 0)
             {
-                trash.GenerateObstacle(486, 518);
+                trash.GenerateObstacle(960, 480);
             }
 
             if (trash.Position.X <= 0)

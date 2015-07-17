@@ -31,12 +31,8 @@ namespace EndlessRunner
         }
 
 
-        public void GenerateObstacle(int y1, int y2) {
-            // objects always appear from end of screen
-            // parameters are the range of y values we want to accept
-            int x = 960;
-            int y = rng.Next(y1, y2 - obsLength);
-
+        public void GenerateObstacle(int x, int y) 
+        {
             this.Position = new Vector2(x, y);
             numObstacles++;
         }
