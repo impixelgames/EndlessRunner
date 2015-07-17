@@ -58,7 +58,6 @@ namespace EndlessRunner
             player = new Player(texture, 1, 8);
             player.Velocity = 750;
             player.hasJumped = false;
-           
         }
 
         protected override void UnloadContent()
@@ -80,6 +79,11 @@ namespace EndlessRunner
             player.Update(keyState, gameTime);
             trash.Update(gameTime);
 
+            if (Physics.checkCollide(player.min, player.max, trash.min, trash.max))
+            {
+                System.Console.WriteLine("Collision!!!!");
+            }
+
             base.Update(gameTime);
             previousState = keyState;
         }
@@ -90,7 +94,7 @@ namespace EndlessRunner
 
             if (trash.GetObstacles() == 0)
             {
-                trash.GenerateObstacle(488, 520);
+                trash.GenerateObstacle(486, 518);
             }
 
             if (trash.Position.X <= 0)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -13,29 +9,36 @@ namespace EndlessRunner
         private const int defaultVelocity = 750;
         private const int maxJumpHeight = 450;
         private const float playerGravity = 0.15f;
+        private const int width = 50;
+        private const int height = 61;
 
         private int currentFrame;
         private int totalFrames;
-        private int width;
-        private int height;
         private int timeSinceLastFrame = 0;
         private int millisecondsPerFrame = 100;
-
-        public Player(Texture2D texture, int rows, int columns)
-        {
-            Texture = texture;
-            Rows = rows;
-            Columns = columns;
-            currentFrame = 0;
-            totalFrames = Rows * Columns;
-        }
-
+        
+        // Properties
         public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
         public float Velocity { get; set; }
         public bool hasJumped { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
+        
+        // Min and Max for bounding box collision detection
+        public Vector2 min;
+        public Vector2 max;
+
+        public Player(Texture2D texture, int rows, int columns)
+        {
+            this.Texture = texture;
+            this.Rows = rows;
+            this.Columns = columns;
+            this.currentFrame = 0;
+            this.totalFrames = Rows * Columns;
+            this.Position = new Vector2(50, 300);
+        }
+
 
         public void Update(KeyboardState keyState, GameTime gameTime)
         {
@@ -75,14 +78,13 @@ namespace EndlessRunner
                 hasJumped = false;
             }
 
+            // Set AABB collision points
+            this.min = new Vector2((int)Position.X, (int)Position.Y);
+            this.max = new Vector2((int)Position.X + width, (int)Position.Y + height);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
         {
-            //int width = Texture.Width / Columns;
-            //int height = Texture.Height / Rows;
-            width = 50;
-            height = 61;
             int row = (int)((float)currentFrame / (float)Columns);
             int column = currentFrame % Columns;
 

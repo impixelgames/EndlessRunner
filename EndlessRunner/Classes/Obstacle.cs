@@ -14,6 +14,15 @@ namespace EndlessRunner
         private int obsLength;
         private static int numObstacles = 0;
 
+        // Properties
+        public Texture2D Texture { get; set; }
+        public Vector2 Position { get; set; }
+        public float Velocity { get; set; }
+
+        // AABB collision
+        public Vector2 min;
+        public Vector2 max;
+
         public Obstacle(Texture2D texture, int obsLength, float velocity)
         {
             this.obsLength = obsLength;
@@ -21,9 +30,6 @@ namespace EndlessRunner
             this.Velocity = velocity;
         }
 
-        public Texture2D Texture { get; set; }
-        public Vector2 Position { get; set; }
-        public float Velocity { get; set; }
 
         public void GenerateObstacle(int y1, int y2) {
             // objects always appear from end of screen
@@ -54,6 +60,10 @@ namespace EndlessRunner
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Position = new Vector2(Position.X - Velocity * delta, Position.Y);
+
+            // Define AABB collision vectors
+            this.min = new Vector2((int)Position.X, (int)Position.Y);
+            this.max = new Vector2((int)Position.X + (int)Texture.Width, (int)Position.Y + (int)Texture.Height);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
