@@ -7,16 +7,23 @@ namespace EndlessRunner
     class Player
     {
         private const int defaultVelocity = 750;
-        private const int maxJumpHeight = 450;
-        private const float playerGravity = 0.15f;
-        private const int width = 50;
-        private const int height = 61;
+        private const int maxJumpHeight = 415;
+        private const int width = 75;
+        private const int height = 90;
 
         private int currentFrame;
         private int totalFrames;
         private int timeSinceLastFrame = 0;
         private int millisecondsPerFrame = 100;
-        
+
+        private enum State
+        {
+            RUNNING,
+            JUMPING,
+            SLIDING
+        };
+        private State state_ = State.RUNNING;
+
         // Properties
         public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
@@ -36,7 +43,7 @@ namespace EndlessRunner
             this.Columns = columns;
             this.currentFrame = 0;
             this.totalFrames = Rows * Columns;
-            this.Position = new Vector2(50, 300);
+            this.Position = new Vector2(50, 280);
         }
 
 
@@ -70,8 +77,8 @@ namespace EndlessRunner
             // Prevents player from exiting the bottom of window
             if (Position.Y <= maxJumpHeight)
             {
-                Position = new Vector2(50, Position.Y + Velocity * delta * playerGravity);
-                Velocity += playerGravity * 1000;
+                Position = new Vector2(50, Position.Y + Velocity * delta * Physics.Gravity);
+                Velocity += Physics.Gravity * 10;
             }
             else
             {
@@ -98,15 +105,29 @@ namespace EndlessRunner
 
         public void Jump(KeyboardState state, float dt)
         {
-            if ((maxJumpHeight - Position.Y) >= 125f)
+            if ((maxJumpHeight - Position.Y) >= 155f)
             {
                 hasJumped = true;
                 Velocity = defaultVelocity;
             }
             else
             {
-                Position = new Vector2(50, Position.Y - Velocity * dt);
+                Position = new Vector2(50, Position.Y - Velocity * dt * 1.4f);
             }
         }
+
+        private void handleInput(Keys key, float dt)
+        {
+            switch (state_) 
+            {
+                case State.RUNNING:
+                    break;
+
+                case State.JUMPING:
+                    break;
+            }
+        }
+
+
     }
 }

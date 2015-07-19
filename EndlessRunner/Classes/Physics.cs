@@ -13,6 +13,7 @@ namespace EndlessRunner
         /// <summary>
         /// USAGE: bool doesCollide = Physics.checkCollide(a_min, a_max, b_min, b_max);
         /// </summary>
+        public const float Gravity = 0.58f;
 
         public static bool checkCollide(Vector2 amin, Vector2 amax, Vector2 bmin, Vector2 bmax)
         {

@@ -39,7 +39,7 @@ namespace EndlessRunner
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // Load Textures
-            Texture2D texture = this.Content.Load<Texture2D>("player");
+            Texture2D texture = this.Content.Load<Texture2D>("player_final");
             Texture2D trashTexture = this.Content.Load<Texture2D>("trashbagv1");
             Texture2D bgTexture3 = this.Content.Load<Texture2D>("background3");
             Texture2D bgTexture2 = this.Content.Load<Texture2D>("background2ver1");
