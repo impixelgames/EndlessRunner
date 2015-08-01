@@ -79,3 +79,9 @@
 /processorParam:TextureFormat=Color
 /build:bg1.png
 
+#begin lvl1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:lvl1.mp3
+

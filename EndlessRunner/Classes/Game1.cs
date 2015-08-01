@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Text;
 
@@ -37,6 +38,11 @@ namespace EndlessRunner
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Music
+            Song lvl1 = Content.Load<Song>("lvl1");
+            MediaPlayer.Play(lvl1);
+            MediaPlayer.Volume = 0.5f;
             
             // Load Textures
             Texture2D texture = this.Content.Load<Texture2D>("player_final");
@@ -47,12 +53,12 @@ namespace EndlessRunner
 
             // Backgrounds
             Backgrounds = new List<Background>();
-            Backgrounds.Add(new Background(bgTexture3, new Vector2(50, 0), 1f));
-            Backgrounds.Add(new Background(bgTexture2, new Vector2(125, 0), 1f));
-            Backgrounds.Add(new Background(bgTexture1, new Vector2(200, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture3, new Vector2(25, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture2, new Vector2(75, 0), 1f));
+            Backgrounds.Add(new Background(bgTexture1, new Vector2(300, 0), 1f));
 
             // Obstacles
-            trash = new Obstacle(trashTexture, 32, 200f);
+            trash = new Obstacle(trashTexture, 32, 300f);
 
             // Main Character
             player = new Player(texture, 1, 8);
